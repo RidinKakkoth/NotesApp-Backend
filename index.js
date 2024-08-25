@@ -4,7 +4,14 @@ const cors=require('cors')
 require('dotenv').config();
 
 const app=express()
-app.use(cors())
+
+const corsOptions = {
+    origin: 'https://notesapp-frontend-3x3v.onrender.com', 
+    methods: 'GET,POST,PUT,DELETE', 
+    allowedHeaders: 'Content-Type,Authorization' 
+};
+
+app.use(cors(corsOptions));
 app.use(express.json())
 
 
