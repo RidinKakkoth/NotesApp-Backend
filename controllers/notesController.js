@@ -1,4 +1,4 @@
-const db = require('../db');
+const db = require('../config/db');
 
 // Fetch all notes
 const getNotes = (req, res) => {
