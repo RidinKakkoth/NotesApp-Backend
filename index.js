@@ -1,9 +1,9 @@
-const express=require('express')
-const mysql=require('mysql2')
-const cors=require('cors')
-require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const db = require('./db'); 
+const noteRoutes = require('./controllers/noteController');
 
-const app=express()
+const app = express();
 
 const corsOptions = {
     origin: 'https://notesapp-frontend-3x3v.onrender.com', 
@@ -12,15 +12,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(express.json())
-
-
-const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
-});
+app.use(express.json());
 
 db.connect(err => {
     if (err) {
@@ -30,34 +22,8 @@ db.connect(err => {
     console.log('Connected to MySQL database');
 });
 
+app.use('/notes', noteRoutes);
 
-// Fetch all notes
-app.get('/notes', (req, res) => {
-    db.query('SELECT * FROM notes', (err, results) => {
-        if (err) throw err;
-        res.json(results);
-    });
-});
-
-// Add a new note
-app.post('/notes', (req, res) => {
-    const { content } = req.body;
-    db.query('INSERT INTO notes (content) VALUES (?)', [content], (err, result) => {
-        if (err) throw err;
-        res.json({ id: result.insertId, content });
-    });
-});
-
-// Delete a note
-app.delete('/notes/:id', (req, res) => {
-    const { id } = req.params;
-    db.query('DELETE FROM notes WHERE id = ?', [id], (err, result) => {
-        if (err) throw err;
-        res.sendStatus(200);
-    });
-});
-
-// Start server
 app.listen(3001, () => {
     console.log('Server running on port 3001');
 });
