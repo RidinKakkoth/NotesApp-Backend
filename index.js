@@ -22,7 +22,7 @@ db.connect(err => {
     console.log('Connected to MySQL database');
 });
 
-app.use('/notes', noteRoutes);
+app.use('/', noteRoutes);
 
 app.listen(3001, () => {
     console.log('Server running on port 3001');
