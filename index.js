@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const db = require('./config/db'); 
-const noteRoutes = require('./controllers/noteController');
+const noteRoutes = require('./routes/notesRoutes');
 
 const app = express();
 
